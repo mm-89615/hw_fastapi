@@ -1,0 +1,58 @@
+###
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+
+{
+  "title": "First advertisement",
+  "description": "First description",
+  "price": 10.455,
+  "author": "John Doe"
+}
+
+###
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+
+{
+  "title": "Second advertisement",
+  "description": "Second description",
+  "price": 100.455,
+  "author": "Doe John"
+}
+
+###
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+
+{
+  "title": "Third advertisement",
+  "description": "Third description",
+  "price": 14,
+  "author": "John Doe"
+}
+
+###
+GET http://localhost:8080/api/v1/advertisement
+
+###
+GET http://localhost:8080/api/v1/advertisement/1
+
+###
+PATCH http://localhost:8080/api/v1/advertisement/1
+Content-Type: application/json
+
+{
+  "title": "New title"
+}
+
+###
+DELETE http://localhost:8080/api/v1/advertisement/2
+
+###
+GET http://localhost:8080/api/v1/advertisement
+
+###
+GET http://localhost:8080/api/v1/advertisement?title=New title&description=First description
+
+###
+GET http://localhost:8080/api/v1/advertisement?author=John Doe
