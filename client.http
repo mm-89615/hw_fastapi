@@ -56,3 +56,79 @@ GET http://localhost:8080/api/v1/advertisement?title=New title&description=First
 
 ###
 GET http://localhost:8080/api/v1/advertisement?author=John Doe
+
+
+### HW 2
+
+POST http://localhost:8080/api/v1/user
+Content-Type: application/json
+
+{
+  "name": "John",
+  "password": "123456"
+}
+
+###
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+
+{
+  "title": "First advertisement",
+  "description": "First description",
+  "price": 10.455
+}
+
+###
+POST http://localhost:8080/api/v1/login
+Content-Type: application/json
+
+{
+  "name": "John",
+  "password": "123456"
+}
+
+###
+
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+x-token: 86706c3e-7cfb-47cf-88d0-7625022a3bbd
+
+{
+  "title": "First advertisement",
+  "description": "First description",
+  "price": 10.455
+}
+
+###
+POST http://localhost:8080/api/v1/advertisement
+Content-Type: application/json
+x-token: 86706c3e-7cfb-47cf-88d0-7625022a3bbd
+
+{
+  "title": "Second advertisement",
+  "description": "Second description",
+  "price": 1123
+}
+
+###
+GET http://localhost:8080/api/v1/advertisement
+
+###
+PATCH http://localhost:8080/api/v1/advertisement/1
+Content-Type: application/json
+
+{
+  "title": "New title"
+}
+
+###
+PATCH http://localhost:8080/api/v1/advertisement/1
+Content-Type: application/json
+x-token: 86706c3e-7cfb-47cf-88d0-7625022a3bbd
+
+{
+  "title": "New title"
+}
+
+###
+GET http://localhost:8080/api/v1/advertisement/1

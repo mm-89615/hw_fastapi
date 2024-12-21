@@ -22,32 +22,48 @@ class User(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    name: Mapped[str] = mapped_column(String(50),
+    name: Mapped[str] = mapped_column(
+        String(50),
         unique=True,
-        index=True,
-        nullable=False)
+        nullable=False
+    )
     password: Mapped[str] = mapped_column(String(70), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    updated_at: Mapped[datetime] = mapped_column(DateTime,
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
         server_default=func.now(),
-        onupdate=func.now())
-    tokens: Mapped[list["Token"]] = relationship("Token",
+        onupdate=func.now()
+    )
+    tokens: Mapped[list["Token"]] = relationship(
+        "Token",
         back_populates="user",
-        lazy="joined")
-    ads: Mapped[list["Advertisement"]] = relationship("Advertisement",
+        lazy="joined"
+    )
+    ads: Mapped[list["Advertisement"]] = relationship(
+        "Advertisement",
         back_populates="user",
-        lazy="joined")
+        lazy="joined"
+    )
+
+    @property
+    def dict(self):
+        return {
+            "id": self.id,
+            "name": self.name
+        }
 
 
 class Token(Base):
     __tablename__ = "token"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    token: Mapped[uuid.UUID] = mapped_column(UUID,
+    token: Mapped[uuid.UUID] = mapped_column(
+        UUID,
         unique=True,
-        server_default=func.gen_random_uuid())
+        server_default=func.gen_random_uuid()
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
-    user_id: Mapped[int] = ForeignKey("user.id")
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), unique=False)
     user: Mapped[User] = relationship(User, back_populates="tokens", lazy="joined")
 
     @property
@@ -59,15 +75,16 @@ class Advertisement(Base):
     __tablename__ = "advertisement"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    title: Mapped[str] = mapped_column(String)
+    title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
-    price: Mapped[float] = mapped_column(DECIMAL(10, 2))
-    author: Mapped[str] = ForeignKey("user.id")
+    price: Mapped[float] = mapped_column(DECIMAL(10, 2), nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime,
         server_default=func.now(),
-        onupdate=func.now())
+        onupdate=func.now()
+    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), unique=False)
     user: Mapped[User] = relationship(User, back_populates="ads", lazy="joined")
 
     @property
@@ -76,7 +93,7 @@ class Advertisement(Base):
         "title": self.title,
         "description": self.description,
         "price": self.price,
-        "author": self.author,
+        "user_id": self.user_id,
         "created_at": self.created_at.isoformat(),
         "updated_at": self.updated_at.isoformat(),
     }

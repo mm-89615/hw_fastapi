@@ -43,7 +43,7 @@ async def get_items_by_filters(
             if hasattr(orm_cls, field):
                 query = query.where(getattr(orm_cls, field) == value)
     result = await session.execute(query)
-    items = result.scalars().all()
+    items = result.unique().scalars().all()
     if not items:
         raise HTTPException(status_code=404, detail="Records not found")
     return items

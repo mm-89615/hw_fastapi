@@ -18,7 +18,7 @@ class GetAdvertisementResponse(BaseModel):
     title: str
     description: str | None
     price: float
-    author: str
+    user_id: int
     created_at: datetime.datetime
     updated_at: datetime.datetime
 
@@ -31,7 +31,6 @@ class CreateAdvertisementRequest(BaseModel):
     title: str
     description: str | None
     price: float
-    author: str
 
 
 class CreateAdvertisementResponse(IdResponseBase):
@@ -42,7 +41,6 @@ class UpdateAdvertisementRequest(BaseModel):
     title: str | None = None
     description: str | None = None
     price: float | None = None
-    author: str | None = None
 
 
 class UpdateAdvertisementResponse(IdResponseBase):
