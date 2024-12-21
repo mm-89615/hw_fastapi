@@ -18,7 +18,11 @@ from schemes import (
     CreateUserResponse,
     CreateUserRequest,
     LoginRequest,
-    LoginResponse
+    LoginResponse,
+    GetUserResponse,
+    UpdateUserResponse,
+    UpdateUserRequest,
+    DeleteUserResponse
 )
 
 app = FastAPI(
@@ -73,7 +77,7 @@ async def update_advertisement(
     ad_json = ad_request.dict(exclude_unset=True)
     ad = await crud.get_item_by_id(session, Advertisement, ad_id)
 
-    if ad.user_id != token.user_id:
+    if ad.user_id != token.user_id and token.user.role != "admin":
         raise HTTPException(status_code=403, detail="Access denied")
 
     for field, value in ad_json.items():
@@ -93,7 +97,7 @@ async def delete_advertisement(
     ad_id: int
 ) -> dict[str, str]:
     ad = await crud.get_item_by_id(session, Advertisement, ad_id)
-    if ad.user_id != token.user_id:
+    if ad.user_id != token.user_id and token.user.role != "admin":
         raise HTTPException(status_code=403, detail="Access denied")
     await crud.delete_item(session, ad)
     return STATUS_DELETED
@@ -122,6 +126,12 @@ async def get_advertisements_by_filters(
     return {"result": [ad.dict for ad in ads]}
 
 
+@app.get(path="/api/v1/user/{user_id}", response_model=GetUserResponse, tags=["user"])
+async def get_user(session: SessionDependency, user_id: int) -> dict[str, int]:
+    user = await crud.get_item_by_id(session, User, user_id)
+    return user.dict
+
+
 @app.post(path="/api/v1/user", response_model=CreateUserResponse, tags=["user"])
 async def create_user(
     session: SessionDependency,
@@ -132,6 +142,48 @@ async def create_user(
     user = User(**user_request_dict)
     await crud.add_item(session, user)
     return user.id_dict
+
+
+@app.patch(
+    path="/api/v1/user/{user_id}",
+    response_model=UpdateUserResponse,
+    tags=["user"]
+)
+async def update_user(
+    session: SessionDependency,
+    token: TokenDependency,
+    user_request: UpdateUserRequest,
+    user_id: int
+) -> dict[str, int]:
+    user_json = user_request.dict(exclude_unset=True)
+    user = await crud.get_item_by_id(session, User, user_id)
+
+    if user.id != token.user_id and token.user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    for field, value in user_json.items():
+        if field == "role" and token.user.role != "admin":
+            raise HTTPException(status_code=403, detail="You can't change role")
+        setattr(user, field, value)
+    await crud.add_item(session, user)
+    return user.id_dict
+
+
+@app.delete(
+    path="/api/v1/user/{user_id}",
+    response_model=DeleteUserResponse,
+    tags=["user"]
+)
+async def delete_user(
+    session: SessionDependency,
+    token: TokenDependency,
+    user_id: int
+) -> dict[str, str]:
+    user = await crud.get_item_by_id(session, User, user_id)
+    if user.id != token.user_id and token.user.role != "admin":
+        raise HTTPException(status_code=403, detail="Access denied")
+    await crud.delete_item(session, user)
+    return STATUS_DELETED
 
 
 @app.post(path="/api/v1/login", response_model=LoginResponse, tags=["user"])

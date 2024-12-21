@@ -1,11 +1,21 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Integer, DECIMAL, DateTime, func, String, ForeignKey, UUID
+from sqlalchemy import (
+    Integer,
+    DECIMAL,
+    DateTime,
+    func,
+    String,
+    ForeignKey,
+    UUID,
+    CheckConstraint
+)
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncAttrs
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
 from config import PG_DSN
+from custom_types import Role
 
 engine = create_async_engine(PG_DSN)
 Session = async_sessionmaker(bind=engine, expire_on_commit=False)
@@ -20,6 +30,7 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 class User(Base):
     __tablename__ = "user"
+    __tableargs__ = (CheckConstraint("role in ('user', 'admin')", name="role_check"))
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(
@@ -37,19 +48,23 @@ class User(Base):
     tokens: Mapped[list["Token"]] = relationship(
         "Token",
         back_populates="user",
-        lazy="joined"
+        lazy="joined",
+        cascade="all, delete-orphan"
     )
     ads: Mapped[list["Advertisement"]] = relationship(
         "Advertisement",
         back_populates="user",
-        lazy="joined"
+        lazy="joined",
+        cascade="all, delete-orphan"
     )
+    role: Mapped[Role] = mapped_column(String, default="user")
 
     @property
     def dict(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "role": self.role
         }
 
 

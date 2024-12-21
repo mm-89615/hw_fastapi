@@ -3,7 +3,7 @@ import uuid
 from typing import Literal, Sequence
 
 from pydantic import BaseModel
-
+from custom_types import Role
 
 class IdResponseBase(BaseModel):
     id: int
@@ -70,3 +70,19 @@ class LoginRequest(BaseUserRequest):
 
 class LoginResponse(BaseModel):
     token: uuid.UUID
+
+class GetUserResponse(BaseModel):
+    id: int
+    name: str
+    role: Role
+
+class UpdateUserRequest(BaseUserRequest):
+    name: str | None = None
+    password: str | None = None
+    role: Role | None = None
+
+class UpdateUserResponse(IdResponseBase):
+    pass
+
+class DeleteUserResponse(StatusResponse):
+    pass
