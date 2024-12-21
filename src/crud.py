@@ -16,9 +16,11 @@ async def add_item(session: AsyncSession, item: ORM_OBJ):
         raise HTTPException(status_code=409, detail="Record already exists")
 
 
-async def get_item_by_id(session: AsyncSession,
-        orm_cls: ORM_CLS,
-        item_id: int) -> ORM_OBJ:
+async def get_item_by_id(
+    session: AsyncSession,
+    orm_cls: ORM_CLS,
+    item_id: int
+) -> ORM_OBJ:
     orm_object = await session.get(orm_cls, item_id)
     if not orm_object:
         raise HTTPException(status_code=404, detail="Record not found")
@@ -30,9 +32,11 @@ async def delete_item(session: AsyncSession, item: ORM_OBJ) -> None:
     await session.commit()
 
 
-async def get_items_by_filters(session: AsyncSession,
-        orm_cls: ORM_CLS,
-        filters: dict[str, Any] | None = None) -> Sequence[ORM_OBJ]:
+async def get_items_by_filters(
+    session: AsyncSession,
+    orm_cls: ORM_CLS,
+    filters: dict[str, Any] | None = None
+) -> Sequence[ORM_OBJ]:
     query = select(orm_cls)
     if filters:
         for field, value in filters.items():
