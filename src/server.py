@@ -1,17 +1,23 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from sqlalchemy import select
 
 import crud
+from auth import hash_password, check_password
 from constants import STATUS_DELETED
 from dependency import SessionDependency
 from lifespan import lifespan
-from models import Advertisement
+from models import Advertisement, User, Token
 from schemes import (GetAdvertisementResponse,
     CreateAdvertisementResponse,
     CreateAdvertisementRequest,
     UpdateAdvertisementResponse,
     DeleteAdvertisementResponse,
     UpdateAdvertisementRequest,
-    GetListAdvertisementsResponse)
+    GetListAdvertisementsResponse,
+    CreateUserResponse,
+    CreateUserRequest,
+    LoginRequest,
+    LoginResponse)
 
 app = FastAPI(title="Hello World",
     terms_of_service="",
@@ -81,3 +87,28 @@ async def get_advertisements_by_filters(session: SessionDependency,
     filters = {k: v for k, v in filters.items() if v is not None}
     ads = await crud.get_items_by_filters(session, Advertisement, filters)
     return {"result": [ad.dict for ad in ads]}
+
+
+@app.post(path="api/v1/user", response_model=CreateUserResponse, tags=["user"])
+async def create_user(session: SessionDependency,
+    user_request: CreateUserRequest) -> dict[str, int]:
+    user_request_dict = user_request.dict()
+    user_request_dict["password"] = hash_password(user_request_dict["password"])
+    user = User(**user_request_dict)
+    await crud.add_item(session, user)
+    return user.id_dict
+
+
+@app.post(path="api/v1/login", response_model=LoginResponse, tags=["user"])
+async def login(session: SessionDependency,
+    login_request: LoginRequest) -> dict[str, str]:
+    user_query = select(User).where(User.name == login_request.name)
+    user = await session.scalar(user_query)
+    if not user:
+        raise HTTPException(status_code=401, detail="User name is incorrect")
+    if not check_password(login_request.password, user.password):
+        raise HTTPException(status_code=401, detail="Invalid password")
+
+    token = Token(user_id=user.id)
+    await crud.add_item(session, token)
+    return token.dict

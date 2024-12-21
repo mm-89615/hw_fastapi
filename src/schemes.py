@@ -1,4 +1,5 @@
 import datetime
+import uuid
 from typing import Literal, Sequence
 
 from pydantic import BaseModel
@@ -50,3 +51,24 @@ class UpdateAdvertisementResponse(IdResponseBase):
 
 class DeleteAdvertisementResponse(StatusResponse):
     pass
+
+
+class BaseUserRequest(BaseModel):
+    name: str
+    password: str
+
+
+class CreateUserRequest(BaseUserRequest):
+    pass
+
+
+class CreateUserResponse(IdResponseBase):
+    pass
+
+
+class LoginRequest(BaseUserRequest):
+    pass
+
+
+class LoginResponse(BaseModel):
+    token: uuid.UUID

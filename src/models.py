@@ -50,6 +50,10 @@ class Token(Base):
     user_id: Mapped[int] = ForeignKey("user.id")
     user: Mapped[User] = relationship(User, back_populates="tokens", lazy="joined")
 
+    @property
+    def dict(self):
+        return {"token": self.token}
+
 
 class Advertisement(Base):
     __tablename__ = "advertisement"
@@ -78,8 +82,8 @@ class Advertisement(Base):
     }
 
 
-ORM_OBJ = Advertisement
-ORM_CLS = type(Advertisement)
+ORM_OBJ = Advertisement | User | Token
+ORM_CLS = type(Advertisement) | type(User) | type(Token)
 
 
 async def init_orm():
