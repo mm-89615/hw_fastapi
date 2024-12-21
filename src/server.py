@@ -89,9 +89,12 @@ async def update_advertisement(
 )
 async def delete_advertisement(
     session: SessionDependency,
+    token: TokenDependency,
     ad_id: int
 ) -> dict[str, str]:
     ad = await crud.get_item_by_id(session, Advertisement, ad_id)
+    if ad.user_id != token.user_id:
+        raise HTTPException(status_code=403, detail="Access denied")
     await crud.delete_item(session, ad)
     return STATUS_DELETED
 
