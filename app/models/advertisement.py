@@ -1,4 +1,3 @@
-
 from datetime import datetime
 
 from sqlalchemy import Integer, DECIMAL, DateTime, func, String, ForeignKey

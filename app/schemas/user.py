@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from utils.custom_types import Role
 from schemas.base import IdResponseBase, StatusResponse, BaseUserRequest
+from utils.custom_types import Role
 
 
 class CreateUserRequest(BaseUserRequest):

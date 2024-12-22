@@ -3,9 +3,8 @@ from datetime import datetime
 from sqlalchemy import Integer, DateTime, func, String, CheckConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from utils.custom_types import Role
-
 from models import Base
+from utils.custom_types import Role
 
 
 class User(Base):

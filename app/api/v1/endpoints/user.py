@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
 
-from utils.dependency import SessionDependency, TokenDependency
-from utils.security import hash_password
 from models import User
 from schemas import (
     CreateUserResponse,
@@ -12,6 +10,8 @@ from schemas import (
     DeleteUserResponse
 )
 from services import crud
+from utils.dependency import SessionDependency, TokenDependency
+from utils.security import hash_password
 
 router = APIRouter(tags=["user"], prefix="/api/v1/user")
 

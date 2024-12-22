@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
 
-from utils.constants import STATUS_DELETED
-from utils.dependency import SessionDependency, TokenDependency
 from models import Advertisement
 from schemas import (
     GetAdvertisementResponse,
@@ -12,6 +10,8 @@ from schemas import (
     DeleteAdvertisementResponse, GetListAdvertisementsResponse
 )
 from services import crud
+from utils.constants import STATUS_DELETED
+from utils.dependency import SessionDependency, TokenDependency
 
 router = APIRouter(tags=["advertisement"], prefix="/api/v1/advertisement")
 

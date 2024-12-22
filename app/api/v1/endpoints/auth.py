@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import select
 
-from utils.dependency import SessionDependency
-from utils.security import check_password
 from models import User, Token
 from schemas import LoginResponse, LoginRequest
 from services import crud
+from utils.dependency import SessionDependency
+from utils.security import check_password
 
 router = APIRouter(tags=["auth"], prefix="/api/v1/login")
 
