@@ -6,8 +6,9 @@ from fastapi import Depends, Header, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from config import TOKEN_TTL_SEC
-from models import Session, Token
+from core.config import TOKEN_TTL_SEC
+from db import Session
+from models import Token
 
 
 async def get_session() -> AsyncSession:

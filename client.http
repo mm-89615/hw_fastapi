@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 
-### Токен админа: d1c04d81-bed9-47f6-8aec-73c329b11cab
+### Токен админа: ea2fab94-a7ad-4c6b-ade1-a51a8ad0e0e9
 POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
@@ -28,7 +28,7 @@ Content-Type: application/json
   "password": "admin"
 }
 
-###  Токен user_1: 161765af-9b88-4ab5-a6a5-730d06d97012
+###  Токен user_1: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
@@ -37,7 +37,7 @@ Content-Type: application/json
   "password": "123456"
 }
 
-### Токен user_2: 2eb9005f-16de-40c2-afc1-7c793d1de847
+### Токен user_2: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 POST http://localhost:8080/api/v1/login
 Content-Type: application/json
 
@@ -61,7 +61,7 @@ Content-Type: application/json
 ### Создание объявления с токеном user_1
 POST http://localhost:8080/api/v1/advertisement
 Content-Type: application/json
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 {
   "title": "First advertisement",
@@ -72,7 +72,7 @@ x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
 ### Создание объявления с токеном user_2
 POST http://localhost:8080/api/v1/advertisement
 Content-Type: application/json
-x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 {
   "title": "Second advertisement",
@@ -103,7 +103,7 @@ Content-Type: application/json
 ### Обновление объявления user_1 с токеном user_2
 PATCH http://localhost:8080/api/v1/advertisement/1
 Content-Type: application/json
-x-Token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-Token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 {
   "title": "New title by user_2"
@@ -112,7 +112,7 @@ x-Token: 2eb9005f-16de-40c2-afc1-7c793d1de847
 ### Обновление объявления user_1 с токеном user_1
 PATCH http://localhost:8080/api/v1/advertisement/1
 Content-Type: application/json
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 {
   "title": "New title by user_1"
@@ -124,7 +124,7 @@ GET http://localhost:8080/api/v1/advertisement/1
 ### Обновление объявления user_2 с токеном админа
 PATCH http://localhost:8080/api/v1/advertisement/2
 Content-Type: application/json
-x-token: d1c04d81-bed9-47f6-8aec-73c329b11cab
+x-token: ea2fab94-a7ad-4c6b-ade1-a51a8ad0e0e9
 
 {
   "title": "New title by admin"
@@ -140,18 +140,18 @@ DELETE http://localhost:8080/api/v1/advertisement/1
 
 ### Удаление объявления user_2 с токеном user_1
 DELETE http://localhost:8080/api/v1/advertisement/2
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 ### Удаление объявления user_2 с токеном user_2
 DELETE http://localhost:8080/api/v1/advertisement/2
-x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 ### Получение всех объявлений
 GET http://localhost:8080/api/v1/advertisement
 
 ### Удаление объявления user_1 с токеном админа
 DELETE http://localhost:8080/api/v1/advertisement/1
-x-token: d1c04d81-bed9-47f6-8aec-73c329b11cab
+x-token: ea2fab94-a7ad-4c6b-ade1-a51a8ad0e0e9
 
 ### Получение всех объявлений
 GET http://localhost:8080/api/v1/advertisement
@@ -172,7 +172,7 @@ Content-Type: application/json
 ### Обновление user_1 с токеном user_2
 PATCH http://localhost:8080/api/v1/user/2
 Content-Type: application/json
-x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 {
   "name": "New name by user_2"
@@ -181,7 +181,7 @@ x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
 ### Обновление user_1 с токеном user_1 с ролью
 PATCH http://localhost:8080/api/v1/user/2
 Content-Type: application/json
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 {
   "name": "New name by user_1 with new role",
@@ -191,7 +191,7 @@ x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
 ### Обновление user_1 с токеном user_1
 PATCH http://localhost:8080/api/v1/user/2
 Content-Type: application/json
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 {
   "name": "New name by user_1"
@@ -201,11 +201,11 @@ GET http://localhost:8080/api/v1/user/2
 
 ### Удаление user_1 с токеном user_2
 DELETE http://localhost:8080/api/v1/user/2
-x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 ### Удаление user_1 с токеном user_1
 DELETE http://localhost:8080/api/v1/user/2
-x-token: 161765af-9b88-4ab5-a6a5-730d06d97012
+x-token: f2049dc9-9183-4ef8-80c9-c4603e1ce08f
 
 ### Получение user_1
 GET http://localhost:8080/api/v1/user/2
@@ -213,7 +213,7 @@ GET http://localhost:8080/api/v1/user/2
 ### Обновление user_2 с токеном админа
 PATCH http://localhost:8080/api/v1/user/3
 Content-Type: application/json
-x-token: d1c04d81-bed9-47f6-8aec-73c329b11cab
+x-token: ea2fab94-a7ad-4c6b-ade1-a51a8ad0e0e9
 
 {
   "name": "New name by admin",
@@ -235,7 +235,7 @@ Content-Type: application/json
 ### Обновление user_3 с токеном user_2 (admin)
 PATCH http://localhost:8080/api/v1/user/4
 Content-Type: application/json
-x-token: 2eb9005f-16de-40c2-afc1-7c793d1de847
+x-token: 1501cd85-435e-4c4b-aaf6-5fb37e62821d
 
 {
   "name": "New name by user_2"

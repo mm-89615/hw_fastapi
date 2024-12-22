@@ -2,9 +2,10 @@ import asyncio
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from auth import hash_password
-from config import ADMIN_NAME, ADMIN_PASSWORD
-from models import User, Session
+from core.config import ADMIN_NAME, ADMIN_PASSWORD
+from utils.security import hash_password
+from db import Session
+from models import User
 
 
 async def create_admin(session: AsyncSession, name: str, password: str):
